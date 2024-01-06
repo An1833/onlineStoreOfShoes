@@ -13,12 +13,12 @@ function App() {
   const [cartOpened, setCartOpened] = React.useState(false)
 
   React.useEffect(() => {
-    axios.get("https://65849524022766bcb8c76035.mockapi.io/api/v1/items")
+    axios.get(`https://65849524022766bcb8c76035.mockapi.io/api/v1/items`)
     .then((res) => {
       setItems(res.data);  
     });  
 
-    axios.get("https://65849524022766bcb8c76035.mockapi.io/api/v1/cart")
+    axios.get(`https://65849524022766bcb8c76035.mockapi.io/api/v1/cart`)
     .then((res) => {
       setCartItems(res.data); 
     });
@@ -26,12 +26,12 @@ function App() {
   },[]);
 
   const onAddToCard = (obj) => {
-    axios.post("https://65849524022766bcb8c76035.mockapi.io/api/v1/cart", obj)
+    axios.post(`https://65849524022766bcb8c76035.mockapi.io/api/v1/cart`, obj)
     setCartItems((prev) => [...prev, obj]);
   };
 
   const onRemoveItem = (id) => {
-  //axios.delete("https://65849524022766bcb8c76035.mockapi.io/api/v1/cart/${id}")
+  axios.delete(`https://65849524022766bcb8c76035.mockapi.io/api/v1/cart/${id}`)
     setCartItems((prev) => prev.filter(item => item.id !== id ));
   };
 
