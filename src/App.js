@@ -9,6 +9,7 @@ import Header from "./components/Header.jsx";
 function App() {
   const [items, setItems] = React.useState([]);
   const [cartItems, setCartItems] = React.useState([]);
+  const [favorites, setFavorites] = React.useState([]);
   const [searchValue, setSearchValue] = React.useState("");
   const [cartOpened, setCartOpened] = React.useState(false)
 
@@ -39,6 +40,11 @@ function App() {
     setSearchValue(event.target.value);
   };
 
+  const onAddFavorite = (obj) => {
+    /* axios.post(`https://65849524022766bcb8c76035.mockapi.io/api/v1/favorites`, obj) */ // закоментировал, т.к. нет возможности создать еще одну сущность в mocapi.io
+    setFavorites((prev) => [...prev, obj]);
+  };
+
   return (
     <div className="App clear">
       
@@ -65,7 +71,7 @@ function App() {
               title={item.title} 
               price={item.price} 
               imgUrl={item.imgUrl} 
-              onFavorite={()=> console.log ("Добавили в закладки")}
+              onFavorite={(obj) => onAddFavorite (obj)}
               onPlus={(obj) => onAddToCard (obj)}
               />
           ))
