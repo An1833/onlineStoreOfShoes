@@ -38,18 +38,18 @@ header {
   padding: 40px;
   border-bottom: 1px solid #eaeaea;
 
-.img {
-  margin: 0px;
-}
+  .img {
+    margin: 0px;
+  }
 
+  h3,
+  p {
+    margin:0;
+  }
 
-
-
-h3,
-p {
-  margin:0;
-}
-
+  .heart_svg {
+    margin-top: 2px;
+  }
 
 }
 .card:hover {
