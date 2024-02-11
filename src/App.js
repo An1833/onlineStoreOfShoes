@@ -1,7 +1,11 @@
 import React from "react";
+import {Route} from 'react-router-dom';
+
 import axios from "axios";
-import Card from "./components/Card.jsx"
-import Cart from "./components/Cart.jsx"
+import Home from "./pages/Home.jsx"
+import Favorites from "./pages/Favorites.jsx"
+import Cart from "./components/Cart.jsx";
+
 
 import Header from "./components/Header.jsx";
 
@@ -14,7 +18,7 @@ function App() {
   const [cartOpened, setCartOpened] = React.useState(false)
 
   React.useEffect(() => {
-    axios.get(`https://65849524022766bcb8c76035.mockapi.io/api/v1/items`)
+    axios.get(`https://online-story.free.beeceptor.com/items`)
     .then((res) => {
       setItems(res.data);  
     });  
@@ -22,6 +26,11 @@ function App() {
     axios.get(`https://65849524022766bcb8c76035.mockapi.io/api/v1/cart`)
     .then((res) => {
       setCartItems(res.data); 
+    });
+
+    axios.get(`https://65849524022766bcb8c76035.mockapi.io/api/v1/items`)
+    .then((res) => {
+      setFavorites(res.data);
     });
 
   },[]);
@@ -41,7 +50,7 @@ function App() {
   };
 
   const onAddFavorite = (obj) => {
-    /* axios.post(`https://65849524022766bcb8c76035.mockapi.io/api/v1/favorites`, obj) */ // закоментировал, т.к. нет возможности создать еще одну сущность в mocapi.io
+    axios.post(`https://65849524022766bcb8c76035.mockapi.io/api/v1/items`, obj)
     setFavorites((prev) => [...prev, obj]);
   };
 
@@ -52,33 +61,23 @@ function App() {
       
       <Header onClickCart = {() => setCartOpened(true)} />
 
-      <div className="content p-40">
-        <div className="d-flex align-center mb-40 justify-between" >
-          <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : `Все кроссовки` }</h1>
-          <div className="d-flex  align-center search-block">
-          <img src="/img/icon/search.svg" />
-            {searchValue && <img onClick={() => setSearchValue("")}width={15} height={15} className="clear cu-p" src="/img/btn/btn-del.svg" alt="Clear"/>}
-            <input onChange={onChangeSearchInput} value={searchValue} placeholder="Поиск..." />
-          </div>
-        </div>
+     
+      <Route path="/" exact> 
+        <Home 
+          items={items}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          onChangeSearchInput={onChangeSearchInput}
+          onAddFavorite={onAddFavorite}
+          onAddToCard={onAddToCard}
+        />
+        </Route>
 
-        <div className="d-flex flex-wrap">
-          {items
-            .filter ((item) => item.title.toLowerCase().includes(searchValue.toLowerCase()))
-            .map((item, index) => (
-              <Card 
-              key={index}
-              title={item.title} 
-              price={item.price} 
-              imgUrl={item.imgUrl} 
-              onFavorite={(obj) => onAddFavorite (obj)}
-              onPlus={(obj) => onAddToCard (obj)}
-              />
-          ))
-          }
-        </div>
-
-      </div>
+        <Route path="/favorites" exact> 
+        <Favorites 
+        items={favorites}
+        />
+        </Route>
     </div>
     
   );
